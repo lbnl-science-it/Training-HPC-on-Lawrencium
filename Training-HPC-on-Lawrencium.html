@@ -1,0 +1,854 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <meta name="author" content="Novermber 10, 2021" />
+  <title>HPC-on-Lawrencium</title>
+  <style>
+    html {
+      line-height: 1.5;
+      font-family: Georgia, serif;
+      font-size: 20px;
+      color: #1a1a1a;
+      background-color: #fdfdfd;
+    }
+    body {
+      margin: 0 auto;
+      max-width: 36em;
+      padding-left: 50px;
+      padding-right: 50px;
+      padding-top: 50px;
+      padding-bottom: 50px;
+      hyphens: auto;
+      word-wrap: break-word;
+      text-rendering: optimizeLegibility;
+      font-kerning: normal;
+    }
+    @media (max-width: 600px) {
+      body {
+        font-size: 0.9em;
+        padding: 1em;
+      }
+    }
+    @media print {
+      body {
+        background-color: transparent;
+        color: black;
+        font-size: 12pt;
+      }
+      p, h2, h3 {
+        orphans: 3;
+        widows: 3;
+      }
+      h2, h3, h4 {
+        page-break-after: avoid;
+      }
+    }
+    p {
+      margin: 1em 0;
+    }
+    a {
+      color: #1a1a1a;
+    }
+    a:visited {
+      color: #1a1a1a;
+    }
+    img {
+      max-width: 100%;
+    }
+    h1, h2, h3, h4, h5, h6 {
+      margin-top: 1.4em;
+    }
+    h5, h6 {
+      font-size: 1em;
+      font-style: italic;
+    }
+    h6 {
+      font-weight: normal;
+    }
+    ol, ul {
+      padding-left: 1.7em;
+      margin-top: 1em;
+    }
+    li > ol, li > ul {
+      margin-top: 0;
+    }
+    blockquote {
+      margin: 1em 0 1em 1.7em;
+      padding-left: 1em;
+      border-left: 2px solid #e6e6e6;
+      color: #606060;
+    }
+    code {
+      font-family: Menlo, Monaco, 'Lucida Console', Consolas, monospace;
+      font-size: 85%;
+      margin: 0;
+    }
+    pre {
+      margin: 1em 0;
+      overflow: auto;
+    }
+    pre code {
+      padding: 0;
+      overflow: visible;
+    }
+    .sourceCode {
+     background-color: transparent;
+     overflow: visible;
+    }
+    hr {
+      background-color: #1a1a1a;
+      border: none;
+      height: 1px;
+      margin: 1em 0;
+    }
+    table {
+      margin: 1em 0;
+      border-collapse: collapse;
+      width: 100%;
+      overflow-x: auto;
+      display: block;
+      font-variant-numeric: lining-nums tabular-nums;
+    }
+    table caption {
+      margin-bottom: 0.75em;
+    }
+    tbody {
+      margin-top: 0.5em;
+      border-top: 1px solid #1a1a1a;
+      border-bottom: 1px solid #1a1a1a;
+    }
+    th {
+      border-top: 1px solid #1a1a1a;
+      padding: 0.25em 0.5em 0.25em 0.5em;
+    }
+    td {
+      padding: 0.125em 0.5em 0.25em 0.5em;
+    }
+    header {
+      margin-bottom: 4em;
+      text-align: center;
+    }
+    #TOC li {
+      list-style: none;
+    }
+    #TOC a:not(:hover) {
+      text-decoration: none;
+    }
+    code{white-space: pre-wrap;}
+    span.smallcaps{font-variant: small-caps;}
+    span.underline{text-decoration: underline;}
+    div.column{display: inline-block; vertical-align: top; width: 50%;}
+    div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+    ul.task-list{list-style: none;}
+    .display.math{display: block; text-align: center; margin: 0.5rem auto;}
+  </style>
+  <!--[if lt IE 9]>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.3/html5shiv-printshiv.min.js"></script>
+  <![endif]-->
+</head>
+<body>
+<header id="title-block-header">
+<h1 class="title">HPC-on-Lawrencium</h1>
+<p class="author">Novermber 10, 2021</p>
+<p class="date">Wei Feinstein</p>
+</header>
+<h1 id="introduction">Introduction</h1>
+<p>Slides and sample codes can be found on github <a href="https://github.com/lbnl-science-it/Training-HPC-on-Lawrencium">https://github.com/lbnl-science-it/Training-HPC-on-Lawrencium</a></p>
+<p>Video will be posted</p>
+<p>There will be a hands-on session at the end of this training</p>
+<p><a href="https://docs.google.com/forms/d/e/1FAIpQLSeeJ2NyE5Fy6jcapfD9x-JbDR_5xrAhVtdrW0Yyg-LzUpckaA/viewform">Training survey</a></p>
+<h1 id="outline">Outline</h1>
+<ul>
+<li>Overview of Lawrencium supercluster</li>
+<li>Access/login to clusters
+<ul>
+<li>Project types</li>
+<li>User accounts</li>
+<li>login node</li>
+<li>Storage/compute space (home, scratch, group, condo storage)</li>
+</ul></li>
+<li>Data transfer to/from clusters
+<ul>
+<li>DTN</li>
+<li>Globus</li>
+<li>GDrive</li>
+</ul></li>
+<li>Software access and installation
+<ul>
+<li>Software stack</li>
+<li>Installation your own software</li>
+</ul></li>
+<li>Job submission and monitoring
+<ul>
+<li>Accounts &amp; partitions</li>
+<li>Basic job submission</li>
+<li>Interactive jobs</li>
+<li>GPU job submission</li>
+<li>Submit serial tasks in parallel</li>
+</ul></li>
+<li>Jupyter notebooks using Open Ondemand
+<ul>
+<li>Overview</li>
+<li>Jupyter notebooks</li>
+<li>Customized kernels</li>
+<li>Remote visualization<br />
+</li>
+</ul></li>
+<li>Hands-on exercises</li>
+</ul>
+<h1 id="lawrencium-cluster-overview">Lawrencium Cluster Overview</h1>
+<ul>
+<li>Computing service provided by the IT Division to support researchers in all disciplines at the Lab</li>
+<li>A LBNL Condo Cluster Computing program
+<ul>
+<li>Significant investment from LBNL</li>
+<li>Individual PIs buy in compute nodes and storage</li>
+<li>Computational cycles are shared among all lawrencium users</li>
+</ul></li>
+<li>Lawrencium compute nodes
+<ul>
+<li>data center is housed in the building 50B</li>
+<li>1238 CPU Compute nodes, more than 37,192 cores</li>
+<li>152 GPU cards</li>
+<li>8 partitions, lr3,…, lr6, es1, cm1</li>
+<li>~1300 user accounts</li>
+<li>~530 groups</li>
+</ul></li>
+<li>Standalone clusters</li>
+</ul>
+<h1 id="conceptual-diagram-of-lawrencium">Conceptual Diagram of Lawrencium</h1>
+<p><left><img src="figures/lrc2.png" width="80%"></left></p>
+<p><a href="https://sites.google.com/a/lbl.gov/high-performance-computing-services-group/lbnl-supercluster/lawrencium">Detailed information of Lawrencium</a></p>
+<h1 id="getting-access-to-lawrencium">Getting Access to Lawrencium</h1>
+<h4 id="three-types-of-project-accounts">Three types of Project Accounts</h4>
+<ul>
+<li><em>Primary Investigator (PI) Computing Allowance (PCA) account</em>: free 300K SUs per year (pc_xxx)</li>
+<li><em>Condo account</em>: PIs buy in compute nodes to be added to the general pool, in exchange for their own priority access and share the Lawrencium infrastructure (lr_xxx)</li>
+<li><em>Recharge account</em>: pay as you go with minimal recharge rate ~ $0.01/SU (ac_xxx)</li>
+<li>Details about project accounts can be found <a href="http://scs.lbl.gov/getting-an-account">http://scs.lbl.gov/getting-an-account</a></li>
+<li><a href="https://docs.google.com/forms/d/e/1FAIpQLSeAqRcB61J8x3YAuca4QxgMW6OneLbC8wVRbafHNOZDE-h4Fg/viewform">Request project accounts</a></li>
+<li>PIs can grant access researchers/students and external collaborators to their PCA/condo/recharge projects</li>
+</ul>
+<h4 id="user-accounts">User accounts</h4>
+<ul>
+<li>PIs sponsor researchers/students and external collaborators for cluster accounts</li>
+<li><a href="https://docs.google.com/forms/d/e/1FAIpQLSf76kbdJd4GwRQX_iVYVgYwo_wBFmKCcsXyqsnWwlmf_JUgNA/viewform">User account request form</a></li>
+<li><a href="https://sites.google.com/a/lbl.gov/high-performance-computing-services-group/useragreement">User agreement</a></li>
+</ul>
+<h1 id="login-to-lawrencium-cluster">Login to Lawrencium Cluster</h1>
+<ul>
+<li>Linux terminal (command-line) session.</li>
+<li>Mac terminal (see Applications -&gt; Utilities -&gt; Terminal).</li>
+<li>Windows <a href="https://www.chiark.greenend.org.uk/~sgtatham/putty/latest.html">PuTTY</a>.</li>
+<li>One-time passwords (OTPs): set up your smartphone or tablet with Google Authenticator. <a href="https://sites.google.com/a/lbl.gov/high-performance-computing-services-group/authentication/linotp-usage">Instructions</a></li>
+<li>Login:</li>
+</ul>
+<pre><code>ssh $USER@lrc-login.lbl.gov
+password:</code></pre>
+<ul>
+<li><p>Password: your 4-digit PIN followed by the one-time password from which your Google Authenticator app generates on your phone/tablet.</p></li>
+<li><p><strong>DO NOT run jobs on login nodes!!</strong></p></li>
+</ul>
+<h1 id="user-space">User Space</h1>
+<ul>
+<li>Home: <code>/global/home/users/$USER/</code> 20GB per user, data is backed up</li>
+<li>Global scratch: <code>/global/scratch/$USER/</code>, shared, no backup, where to launch jobs</li>
+<li>Shared group project space
+<ul>
+<li>/global/home/groups-sw/ 200GB backup</li>
+<li>/global/home/group/ 400GB no backup</li>
+</ul></li>
+<li>Condo storage: <code>e.g. /clusterfs/etna/ or /global/scratch/projects/xxx</code></li>
+</ul>
+<h1 id="data-transfer">Data Transfer</h1>
+<h4 id="lrc-xfer.lbl.gov-data-transfer-node-dtn">lrc-xfer.lbl.gov: Data Transfer Node (DTN)</h4>
+<ul>
+<li>On Linux: scp/rsync</li>
+</ul>
+<pre><code># Transfer data from a local machine to Lawrencium
+scp file-xxx $USER@lrc-xfer.lbl.gov:/global/home/users/$USER
+scp -r dir-xxx $USER@lrc-xfer.lbl.gov:/global/scratch/$USER
+
+# Transfer from Lawrencium to a local machine
+scp $USER@lrc-xfer.lbl.gov:/global/scratch/$USER/file-xxx ~/Desktop
+
+# Transfer from Lawrencium to Another Institute
+ssh $USER@lrc-xfer.lbl.gov   # DTN
+scp -r $USER@lrc-xfer.lbl.gov:/file-on-lawrencium $USER@other-institute:/destination/path/$USER
+
+rsync: a better data transfer tool as a backup tool
+rsync -avpz file-at-local $USER@lrc-xfer.lbl.gov:/global/home/user/$USER</code></pre>
+<ul>
+<li>On Window
+<ul>
+<li><a href="https://winscp.net/eng/index.php">WinSCP</a>: SFTP client and FTP client for Microsoft Windows</li>
+<li><a href="https://filezilla-project.org/">FileZella</a>: multi-platform program via SFTP</li>
+</ul></li>
+</ul>
+<h1 id="data-transfer-with-globus">Data Transfer with Globus</h1>
+<ul>
+<li>Fast data transfer, refer to <a href="https://sites.google.com/a/lbl.gov/high-performance-computing-services-group/getting-started/data-transfer">instructions</a></li>
+<li>Berkeley Lab users can use Globus to transfer files in/out of their LBNL Google drive. Details about Google drive via Globus is <a href="https://commons.lbl.gov/display/itdivision/GDrive+Access+Via+Globus">here</a></li>
+<li>Possible endpoints include: lbnl#lrc, your laptop/desktop, NERSC, among others.</li>
+<li>Transfer data to/from your laptop (endpoint setup)
+<ul>
+<li>Create an endpoint on your machine using Globus Connect Personal <a href="https://www.globus.org/globus-connect-personal">https://www.globus.org/globus-connect-personal</a></li>
+<li>Run Globus Connect Pesonal on your local machine</li>
+</ul></li>
+</ul>
+<p><left><img src="figures/globus.jpg" width="70%"></left></p>
+<h1 id="software-module-farm">Software Module Farm</h1>
+<ul>
+<li>Software stack, commonly used compiler, software tools provided to all cluster users</li>
+<li>Installed and maintained on a centralized storage device and mounted as read-only NFS file system
+<ul>
+<li>Compilers: e.g. intel, gcc, MPI compilers, Python</li>
+<li>Tools: e.g.matlab, singularity, cuda</li>
+<li>Applications: e.g. machine learning, QChem, MD, cp2k</li>
+<li>Libraries: e.g. fftw, lapack</li>
+</ul></li>
+</ul>
+<pre><code>[@n0000.scs00 ~]$ module avail
+---- /global/software/sl-7.x86_64/modfiles/langs ----
+gcc/6.3.0  intel/2016.4.072  python/2.7 python/3.5 cuda/9.0 julia/0.5.0 ...
+
+---- /global/software/sl-7.x86_64/modfiles/tools ----
+cmake/3.7.2  gnuplot/5.0.5  octave/4.2.0 matlab/r2017b(default)  ...
+
+---- /global/software/sl-7.x86_64/modfiles/apps ----
+bio/blast/2.6.0 math/octave/current ml/tensorflow/2.5.0-py37 ... 
+...</code></pre>
+<h1 id="environment-modules">Environment Modules</h1>
+<ul>
+<li>Manage users’ software environment dynamically</li>
+<li>Properly set up PATH, LD_LIBRARY_PATH…</li>
+<li>Avoid clashes between incompatible software versions</li>
+</ul>
+<pre><code>module purge: clear user’s work environment
+module available: check available software packages
+module load xxx*: load a package
+module list: check currently loaded software </code></pre>
+<ul>
+<li>Modules are arranged in a hierarchical fashion, some of the modules become available only after the parent module(s) are loaded</li>
+<li>e.g., MKL, FFT, and HDF5/NetCDF software is nested within the gcc module</li>
+<li>Example: load an OpenMPI package</li>
+</ul>
+<pre><code>module available openmpi mkl
+module load intel/2016.4.072
+module av openmpi
+module load mkl/2016.4.072 openmpi/3.0.1-intel</code></pre>
+<ul>
+<li>More environment modules can be found <a href="https://sites.google.com/a/lbl.gov/high-performance-computing-services-group/getting-started/sl6-module-farm-guide">here</a></li>
+<li>Users are allowed to install software in their home or group space</li>
+<li>Users don’t have admin rights, but most software can be installed <code>--prefix=/dir/to/your/path</code></li>
+</ul>
+<h1 id="install-python-packages">Install Python Packages</h1>
+<ul>
+<li>Python modules: abundantly available but cannot be installed in the default location without admin rights.</li>
+<li><code>pip install --user package_name</code></li>
+<li><code>export PYTHONPATH</code></li>
+</ul>
+<pre><code>[wfeinstein@n0000 ~]$ module available python
+--------------------- /global/software/sl-7.x86_64/modfiles/langs -----------------------------------
+python/2.7          python/3.5          python/3.6(default) python/3.7          python/3.7.6        python/3.8.2-dll
+[wfeinstein@n0000 ~]$ module load python/3.7
+
+[wfeinstein@n0000 ~]$ python3 -m site --user-site
+/global/home/users/wfeinstein/.local/lib/python3.7/site-packages
+
+[wfeinstein@n0000 ~]$ pip install --user ml-python
+...
+Successfully built ml-python
+Installing collected packages: ml-python
+Successfully installed ml-python-2.2
+
+[wfeinstein@n0000 ~]$ export PYTHONPATH=~/.local/lib/python3.7/site-packages:$PYTHONPATH</code></pre>
+<ul>
+<li>pip install: <code>--install-option="--prefix=$HOME/.local" package_name</code></li>
+<li>Install from source code: <code>python setup.py install –home=/home/user/package_dir</code></li>
+<li>Creat a virtual environmemt: <code>python -m venv my_env</code></li>
+<li>Isolated Python environment</li>
+</ul>
+<h1 id="slurm-resource-manager-job-scheduler">SLURM: Resource Manager &amp; Job Scheduler</h1>
+<h3 id="overview">Overview</h3>
+<p>SLURM is the resource manager and job scheduler to managing all the jobs on the cluster</p>
+<p>Why is this necessary?</p>
+<ul>
+<li>Prevent users’ jobs running on the same nodes.</li>
+<li>Allow everyone to fairly share Lawrencium resources.</li>
+</ul>
+<p>Basic workflow:</p>
+<ul>
+<li>login to Lawrencium; you’ll end up on one of the login nodes in your home directory</li>
+<li>cd to the directory from which you want to submit the job (scratch)</li>
+<li>submit the job using sbatch (or an interactive job using srun, discussed later)</li>
+<li>SLURM assign compute node(s) to your jobs</li>
+<li>your jobs will run on a compute node, not the login node</li>
+</ul>
+<h1 id="slurm-related-environment-variables">Slurm-related environment variables</h1>
+<ul>
+<li><p>Slurm provides global variables</p></li>
+<li><p>Can be used in your job submission scripts to adapt the resources being requested in order to avoid hard-code</p></li>
+<li><p>Examples of Slurm variables</p>
+<ul>
+<li>SLURM_WORKDIR</li>
+<li>SLURM_NTASKS</li>
+<li>SLURM_CPUS_PER_TASK</li>
+<li>SLURM_CPUS_ON_NODE</li>
+<li>SLURM_NODELIST</li>
+<li>SLURM_NNODES</li>
+</ul></li>
+</ul>
+<h1 id="accounts-partitions-quality-of-service-qos">Accounts, Partitions, Quality of Service (QOS)</h1>
+<p>Check slurm association, such as qos, account, partition, the information is required when submitting a job</p>
+<pre><code>sacctmgr show association user=wfeinstein -p
+
+Cluster|Account|User|Partition|Share|Priority|GrpJobs|GrpTRES|GrpSubmit|GrpWall|GrpTRESMins|MaxJobs|MaxTRES|MaxTRESPerNode|MaxSubmit|MaxWall|MaxTRESMins|QOS|Def QOS|GrpTRESRunMins|
+perceus-00|pc_scs|wfeinstein|lr6|1||||||||||||lr_debug,lr_lowprio,lr_normal|||
+perceus-00|ac_test|wfeinstein|lr5|1||||||||||||lr_debug,lr_lowprio,lr_normal|||
+perceus-00|pc_test|wfeinstein|lr4|1||||||||||||lr_debug,lr_lowprio,lr_normal|||
+perceus-00|pc_test|wfeinstein|lr_bigmem|1||||||||||||lr_debug,lr_lowprio,lr_normal|||
+perceus-00|lr_test|wfeinstein|lr3|1||||||||||||condo_test|||
+perceus-00|scs|wfeinstein|es1|1||||||||||||es_debug,es_lowprio,es_normal|||
+...</code></pre>
+<p>Lawrencium cluster info click <a href="https://sites.google.com/a/lbl.gov/high-performance-computing-services-group/lbnl-supercluster/lawrencium">here</a></p>
+<h1 id="job-submission">Job Submission</h1>
+<h3 id="submit-an-interactive-job">Submit an Interactive Job</h3>
+<p>Typically used for code debugging, testing, monitoring</p>
+<ul>
+<li><p>srun: add your resource request to the queue.</p></li>
+<li><p>When the allocation starts, a new bash session will start up on one of the granted nodes</p></li>
+<li><p><code>srun --account=ac_xxx --nodes=1 --partition=lr5 --qos=lr_normal --time=1:0:0 --pty bash</code></p></li>
+<li><p><code>srun -A ac_xxx -N 1 -p lr5 -q lr_normal -t 1:0:0 --pty bash</code></p></li>
+</ul>
+<pre><code>[wfeinstein@n0003 ~]$ srun --account=scs --nodes=1 --partition=lr6 --time=1:0:0 --qos=lr_normal --pty bash
+srun: Granted job allocation 28755918
+srun: Waiting for resource configuration
+srun: Nodes n0101.lr6 are ready for job
+[wfeinstein@n0101 ~]$ squeue -u wfeinstein
+             JOBID PARTITION     NAME     USER ST       TIME  NODES NODELIST(REASON)
+          28755918       lr6     bash wfeinste  R       0:14      1 n0101.lr6</code></pre>
+<p>Once you are on the assigned compute node, start application/commands directly</p>
+<ul>
+<li>salloc: similarly to <em>srun –pty bash</em>.</li>
+<li>a new bash session will start up on the login node</li>
+</ul>
+<h1 id="node-features">Node Features</h1>
+<p>Compute nodes may have different hardware within a SLURM partition, e.g. LR6</p>
+<ul>
+<li><p>lr6_sky: Intel Skylak</p></li>
+<li><p>lr6_cas: Intel Cascade Lake</p></li>
+<li><p>lr6_cas,lr6_m192: lr6_cas + 192GB RAM</p></li>
+<li><p>lr6_sky,lr6_m192: lr6_sky + 192GB RAM</p></li>
+<li><p>When a specific type of node is requsted, wait time typically is longer</p></li>
+<li><p>Slurm flag: –constrain</p></li>
+</ul>
+<pre><code>[wfeinstein@n0000 ~]$ srun --account=scs --nodes=1 --partition=lr6 --time=1:0:0 --qos=lr_normal --constrain=lr6_sky --pty bash
+
+[wfeinstein@n0081 ~]$ free -h
+              total        used        free      shared  buff/cache   available
+Mem:            93G        2.2G         83G        3.1G        7.4G         87G
+Swap:          8.0G          0B        8.0G
+[wfeinstein@n0081 ~]$ exit
+exit
+[wfeinstein@n0000 ~]$ srun --account=scs --nodes=1 --partition=lr6 --time=1:0:0 --qos=lr_normal --constrain=lr6_sky,lr6_m192 --pty bash
+[wfeinstein@n0023 ~]$ free -h
+              total        used        free      shared  buff/cache   available
+Mem:           187G        2.6G        172G        1.7G         12G        182G
+Swap:          8.0G        1.5G        6.5G</code></pre>
+<ul>
+<li>Node features can be found <a href="https://sites.google.com/a/lbl.gov/high-performance-computing-services-group/lbnl-supercluster/lawrencium">here</a></li>
+</ul>
+<h1 id="memeory-specification">Memeory specification</h1>
+<ul>
+<li><p>Most Lawrencium partitions are exclusive: a compute node allows only one user</p></li>
+<li><p>Some condo accounts or partitions, such as ES1 (GPUs), each compute node can be shared by multiple users</p></li>
+<li><p>Slurm flag: –mem (MB) is required when using a shared partition:</p></li>
+<li><p>e.g. a compute node with 96GB RAM, 40 core node: 2300 RAM/core</p>
+<ul>
+<li>–ntaks=1 –mem=2300 (request one core)</li>
+<li>–ntaks=2 –mem=4600 (request 2 cores)</li>
+</ul></li>
+<li><p>LR6 partition lr_bigmem: two large memory nodes (1.5TB)</p></li>
+<li><p>Slurm flag: –partition=lr_bigmem</p></li>
+</ul>
+<h1 id="submit-a-batch-job">Submit a Batch Job</h1>
+<ul>
+<li>Get help with the complete command options <code>sbatch --help</code></li>
+<li>sbatch: submit a job to the batch queue system <code>sbatch myjob.sh</code></li>
+</ul>
+<pre><code>#!/bin/bash -l
+
+# Job name:
+#SBATCH --job-name=mytest
+#
+# Partition:
+#SBATCH --partition=lr6
+#
+# Account:
+#SBATCH --account=pc_test
+#
+# qos:
+#SBATCH --qos=lr_normal
+#
+# Wall clock time:
+#SBATCH --time=1:00:00
+#
+# Node count
+#SBATCH --nodes=1
+#
+# Node feature
+#SBATCH --constrain=lr6_cas
+#
+#SBATCH --mail-user=xxx@lbl.gov
+# email type
+##SBATCH --mail-type=BEGIN/END/FAIL
+#SBATCH --mail-type=ALL
+
+# cd to your work directory
+cd /your/dir
+
+## Commands to run
+module load python/3.7
+python my.py &gt;&amp; mypy.out </code></pre>
+<h1 id="submit-jobs-to-es1-gpu-partition">Submit jobs to ES1 GPU partition</h1>
+<h4 id="interactive-gpu-jobs">Interactive GPU Jobs</h4>
+<ul>
+<li>–gres=gpu:type:GPU#<br />
+</li>
+<li>–ntasks=CPU_CORE#</li>
+<li>ratio CPU_CORE#:GPU# = 2:1</li>
+</ul>
+<pre><code>srun -A your_acct -N 1 -p es1 --gres=gpu:1 --ntasks=2 -q es_normal –t 0:30:0 --pty bash
+
+[wfeinstein@n0000 ~]$ srun -A scs -N 1 -p es1 --gres=gpu:1 --ntasks=2 -q es_normal -t 0:30:0 --pty bash
+[wfeinstein@n0019 ~]$ nvidia-smi
+Sat Feb  6 10:13:25 2021       
++-----------------------------------------------------------------------------+
+| NVIDIA-SMI 440.44       Driver Version: 440.44       CUDA Version: 10.2     |
+|-------------------------------+----------------------+----------------------+
+| GPU  Name        Persistence-M| Bus-Id        Disp.A | Volatile Uncorr. ECC |
+| Fan  Temp  Perf  Pwr:Usage/Cap|         Memory-Usage | GPU-Util  Compute M. |
+|===============================+======================+======================|
+|   0  Tesla V100-SXM2...  Off  | 00000000:62:00.0 Off |                    0 |
+| N/A   45C    P0    53W / 300W |      0MiB / 16160MiB |      0%      Default |
++-------------------------------+----------------------+----------------------+
+|   1  Tesla V100-SXM2...  Off  | 00000000:89:00.0 Off |                    0 |
+| N/A   45C    P0    55W / 300W |      0MiB / 16160MiB |      0%      Default |
++-------------------------------+----------------------+----------------------+
+                                                                               
++-----------------------------------------------------------------------------+
+| Processes:                                                       GPU Memory |
+|  GPU       PID   Type   Process name                             Usage      |
+|=============================================================================|
+|  No running processes found                                                 |
++-----------------------------------------------------------------------------+</code></pre>
+<ul>
+<li>Specify GPU type
+<ul>
+<li>GTX1080TI: –gres=gpu:GTX1080TI:1 (decommissioned)</li>
+<li>GRTX2080TI: –gres=gpu:GRTX2080TI:1</li>
+<li>V00: –gres=gpu:V100:1</li>
+<li>A40: (6 2U A40 coming up)</li>
+</ul></li>
+</ul>
+<pre><code>[wfeinstein@n0000 ~]$ srun -A scs -N 1 -p es1 --gres=gpu:V100:2 --ntasks=4 -q es_normal -t 0:30:0 --pty bash
+
+[wfeinstein@n0016 ~]$ nvidia-smi -L
+GPU 0: Tesla V100-SXM2-16GB (UUID: GPU-7979861e-e0ad-000f-95fb-371e34593991)
+GPU 1: Tesla V100-SXM2-16GB (UUID: GPU-50d24ac9-9eea-f96b-cc8b-db849f9c9427)
+
+[wfeinstein@n0016 ~]$ echo $CUDA_VISIBLE_DEVICES
+0,1</code></pre>
+<h1 id="submit-a-gpu-batch-job">Submit A GPU Batch Job</h1>
+<p>Job Submission Script Example</p>
+<pre><code>#!/bin/bash -l
+
+#SBATCH --job-name=mytest
+#SBATCH --partition=es1         ## es1 GPU partition
+#SBATCH --account=pc_test
+#SBATCH --qos=es_normal         ## qos of es1
+#SBATCH --time=1:00:00
+#SBATCH --nodes=1
+#SBATCH --gres=gpu:V100:2       ## GPUs
+#SBATCH --ntasks=4              ## CPU cores
+#
+cd /your/dir
+
+## Commands to run
+module load python/3.7
+python my.py &gt;&amp; mypy.out </code></pre>
+<h1 id="submit-a-mpi-job">Submit A MPI Job</h1>
+<p>When use multiple nodes, you need to carefully specify the resources. The key flags for use in your job script are:</p>
+<ul>
+<li>–nodes (or -N): number of nodes</li>
+<li>–ntasks-per-node: number of tasks (i.e., processes) to run on each node, especially useful when your job uses large memory, &lt; Max Core# on a node</li>
+<li>–cpus-per-task (or -c): number of CPUs to be used for each task</li>
+<li>–ntasks (or -n): total number of tasks and let the scheduler determine how many nodes and tasks per node are needed.</li>
+<li>In general –cpus-per-task will be 1 except when running threaded code.</li>
+</ul>
+<pre><code>#!/bin/bash -l
+
+#SBATCH --job-name=myMPI
+#SBATCH --partition=lr6
+#SBATCH --account=scs
+#SBATCH --qos=lr_normal
+#SBATCH --time=2:00:00
+#SBATCH --nodes=2                ## Nodes count
+##SBATCH --ntasks=80             ## Number of total MPI tasks to launch (example):  
+##SBATCH --ntasks-per-node=20    ## important with large memory requirement
+
+cd /your/dir
+
+## Commands to run
+module load intel/2016.4.072 openmpi/3.0.1-intel
+mpirun -np 80 ./my_mpi_exe        ## Launch your MPI application</code></pre>
+<h1 id="submit-serial-tasks-in-parallel-gnu-parallel">Submit serial tasks in Parallel (GNU Parallel)</h1>
+<p>GNU Parallel is a shell tool for executing jobs in parallel on one or multiple computers.</p>
+<ul>
+<li>A job can be a single core serial task, multi-core or MPI application.</li>
+<li>A job can also be a command that reads from a pipe.</li>
+<li>Typical input:
+<ul>
+<li>bash script for a single task</li>
+<li>a list of tasks with parameters</li>
+</ul></li>
+</ul>
+<h1 id="example-using-gnu-parallel">Example using GNU Parallel</h1>
+<p>Bioinformatics tool <em>blastp</em> to compare 200 target protein sequences against sequence DB</p>
+<p>Serial bash script: <strong>run-blast.sh</strong></p>
+<pre><code>#!/bin/bash
+module load  bio/blast/2.6.0
+blastp -query $1 -db ../blast/db/img_v400_PROT.00 -out $2  -outfmt 7 -max_target_seqs 10 -num_threads 1</code></pre>
+<p><strong>task.lst</strong>: each line provides one parameter to one task:</p>
+<pre><code>[user@n0002 ]$ cat task.lst    
+ ../blast/data/protein1.faa
+ ../blast/data/protein2.faa
+ ...
+ ../blast/data/protein200.faa</code></pre>
+<p>Instead submit single core-jobs 200 times, which potentially need 200 nodes, GNU parallel sends single-core jobs in parallel using all the cores available, e.g. 2 compute nodes 32*2=64 parallel tasks. Once a CPU core becomes available, another job will be sent to this resource.</p>
+<pre><code>module load parallel/20200222
+JOBS_PER_NODE=32
+parallel --jobs $JOBS_PER_NODE --slf hostfile --wd $WDIR --joblog task.log --resume --progress \
+                -a task.lst sh run-blast.sh {} output/{/.}.blst </code></pre>
+<p>Detailed information of how to submit serial tasks in parallel with <a href="https://sites.google.com/a/lbl.gov/high-performance-computing-services-group/getting-started/faq">GNU parallel</a></p>
+<h1 id="monitoring-jobs">Monitoring Jobs</h1>
+<ul>
+<li>sinfo: check node status of a partition (idle, allocated, drain, down)</li>
+</ul>
+<pre><code>[wfeinstein@n0000 ~]$ sinfo –r –p lr5
+PARTITION AVAIL  TIMELIMIT  NODES  STATE NODELIST 
+lr5          up   infinite      3 drain* n0004.lr5,n0032.lr5,n0169.lr5 
+lr5          up   infinite     14   down n0048.lr5,n0050.lr5 
+lr5          up   infinite     58  alloc n0000.lr5,n0001.lr5,n0002.lr5,n0003.lr5,n0006.lr5,n0009.lr5
+lr5          up   infinite    115   idle n0005.lr5,n0007.lr5,n0008.lr5
+...</code></pre>
+<ul>
+<li>squeue: check job status in the batch queuing system (R or PD)</li>
+</ul>
+<pre><code>squeue –u $USER
+             JOBID PARTITION     NAME     USER ST       TIME  NODES NODELIST(REASON) 
+          28757187       lr6     bash wfeinste  R       0:09      1 n0215.lr6 
+          28757723       es1     bash wfeinste  R       0:16      1 n0002.es1 
+          28759191       lr6     bash wfeinste PD       0:00    120 (QOSMaxNodePerJobLimit)</code></pre>
+<ul>
+<li>sacct: check job information or history</li>
+</ul>
+<pre><code>[wfeinstein@n0002 ~]$ sacct -j 28757723
+       JobID    JobName  Partition    Account  AllocCPUS      State ExitCode 
+------------ ---------- ---------- ---------- ---------- ---------- -------- 
+28757723           bash        es1        scs          2    RUNNING      0:0 
+
+[wfeinstein@n0002 ~]$ sacct -X -o &#39;jobid,user,partition,nodelist,stat&#39;
+       JobID      User  Partition        NodeList      State 
+------------ --------- ---------- --------------- ---------- 
+28755594     wfeinste+        lr5       n0192.lr5  COMPLETED 
+28755597     wfeinste+        lr6       n0101.lr6  COMPLETED 
+28755598     wfeinste+        lr5       n0192.lr5  COMPLETED 
+28755604     wfeinste+ csd_lr6_s+       n0144.lr6  COMPLETED 
+28755693     wfeinste+        lr6       n0101.lr6 CANCELLED+ 
+....
+28757187     wfeinste+        lr6       n0215.lr6  COMPLETED 
+28757386     wfeinste+        es1       n0019.es1     FAILED 
+28757389     wfeinste+        es1       n0002.es1    TIMEOUT 
+28757723     wfeinste+        es1       n0002.es1    RUNNING </code></pre>
+<ul>
+<li>wwall -j <JOB_ID>: check resouce utilization of an active job from a login node</li>
+</ul>
+<pre><code>[wfeinstein@n0000 ~]$ wwall -j 28757187
+--------------------------------------------------------------------------------
+Total CPU utilization: 0%                          
+          Total Nodes: 1         
+               Living: 1                           Warewulf
+          Unavailable: 0                      Cluster Statistics
+             Disabled: 0                 http://warewulf.lbl.gov/
+                Error: 0         
+                 Dead: 0         
+--------------------------------------------------------------------------------
+ Node      Cluster        CPU       Memory (MB)      Swap (MB)      Current
+ Name       Name       [util/num] [% used/total]   [% used/total]   Status
+n0215.lr6               0%   (40) % 3473/192058    % 1655/8191      READY</code></pre>
+<ul>
+<li><code>scancel &lt;jobID&gt;</code> : scancel a job</li>
+</ul>
+<p>More information of <a href="https://sites.google.com/a/lbl.gov/high-performance-computing-services-group/scheduler/slurm-usage-instructions">slurm usage</a></p>
+<h1 id="open-ondemand">Open Ondemand</h1>
+<ul>
+<li>Single web point of entry to the Lawrencium Supercluster</li>
+<li>Allow access to Lawrencium compute resources
+<ul>
+<li>File browser: file editing, data transfer</li>
+<li>Shell command line access - terminal</li>
+</ul></li>
+<li>Monitor jobs</li>
+<li>Interactive applications: Jupyter notebooks, MatLab, RStudio…</li>
+<li>Jupyter server
+<ul>
+<li>Interactive mode: debugging code, light-weight visulization with 4 CPU nodes and 1 GPU node</li>
+<li>Compute mode: Access to all Lawrencium partitions via submitting batch jobs</li>
+</ul></li>
+<li>Sever: <a href="https://lrc-ondemand.lbl.gov/">https://lrc-ondemand.lbl.gov/</a>
+<ul>
+<li>Intel Xeon Gold processor with 32 cores, 96 GB RAM</li>
+</ul></li>
+</ul>
+<h1 id="open-ondemand-1">Open Ondemand</h1>
+<p><left><img src="figures/ood.png" width="80%"></left></p>
+<h1 id="jupyter-notebook">Jupyter Notebook</h1>
+<ul>
+<li>Create user kernels</li>
+</ul>
+<pre><code>module load python/3.7
+python -m venv --system-site-packages ./mykernel
+source ./mykernel/bin/activate
+python -m ipykernel install --user --name=mykernel
+
+# Now you should be able to choose the virtual environment &quot;mykernel&quot; as a kernel in Jupyter</code></pre>
+<h1 id="one-minute-demo-launching-jupyter-notebooks">One-Minute Demo Launching Jupyter Notebooks</h1>
+<p><a href="https://lrc-ondemand.lbl.gov/">https://lrc-ondemand.lbl.gov/</a></p>
+<h1 id="remote-visulization">Remote Visulization</h1>
+<ul>
+<li><p>Allow users to run a real desktop within the cluster environment</p></li>
+<li><p>Allow applications with a GUI, commercial applications, debugger or visualization applications to render results.</p>
+<ul>
+<li><p>Remote Desktop launched within Open OnDemand - <strong>coming up, stay tuned</strong></p></li>
+<li><p>RealVNC is provided as the remote desktop service with local VNC Viewer<br />
+</p></li>
+<li><p>Start VNC service on viz node lrc-viz.lbl.gov</p></li>
+<li><p>Connect to the VNC server with VNC Viewer locally</p></li>
+<li><p>Start applications: Firefox, Jupyter notebooks, paraview …</p></li>
+</ul></li>
+</ul>
+<h1 id="getting-help">Getting help</h1>
+<ul>
+<li>Virtual Office Hours:
+<ul>
+<li>Time: 10:30am - noon (Wednesdays)</li>
+<li>Online <a href="https://docs.google.com/forms/d/e/1FAIpQLScBbNcr0CbhWs8oyrQ0pKLmLObQMFmYseHtrvyLfOAoIInyVA/viewform">request</a></li>
+</ul></li>
+<li>Sending us tickets at hpcshelp@lbl.gov</li>
+<li>More information, documents, tips of how to use LBNL Supercluster <a href="http://scs.lbl.gov">http://scs.lbl.gov/</a></li>
+<li>New Science IT website will be launched Nov 15th, 2021</li>
+<li>Please fill out <a href="https://docs.google.com/forms/d/e/1FAIpQLSeeJ2NyE5Fy6jcapfD9x-JbDR_5xrAhVtdrW0Yyg-LzUpckaA/viewform">Training Survey</a></li>
+</ul>
+<h1 id="hands-on-exercise">Hands-on Exercise</h1>
+<ol type="1">
+<li>Login and data transfer</li>
+<li>Set up work environment using module commands</li>
+<li>Edit files</li>
+<li>Submit jobs</li>
+<li>Monitor jobs</li>
+</ol>
+<h1 id="login-and-data-transfer">Login and Data Transfer</h1>
+<p>Objective: transfer data to/from LRC</p>
+<ol type="1">
+<li><p>Download test data <a href="data.sample">here</a></p></li>
+<li><p>Open two linux terminals on Mac or Window via Putty</p></li>
+<li><p>Transfer local data.sample to LRC on terminal 1</p></li>
+</ol>
+<pre><code>scp -r data.sample $USER@lrc-xfer.lbl.gov:/global/home/users/$USER 
+scp -r data.sample $USER@lrc-xfer.lbl.gov:~</code></pre>
+<ol start="4" type="1">
+<li>On terminal 2, login to LRC</li>
+</ol>
+<pre><code>ssh $USER@lrc-login.lbl.gov 
+pwd 
+cat data.sample
+cp data.sample data.bak</code></pre>
+<ol start="5" type="1">
+<li>Transfer data from LRC DTN to your local machine on terminal 1</li>
+</ol>
+<pre><code>scp -r $USER@lrc-xfer.lbl.gov:/global/home/users/$USER/data.bak .
+ls data.*</code></pre>
+<h1 id="module-commands">Module Commands</h1>
+<ul>
+<li>Display software packages on LRC <code>module available</code></li>
+<li>Check modules in your env <code>module list</code></li>
+<li>Clear your env <code>module purge</code></li>
+<li>Load a module</li>
+</ul>
+<pre><code> module available openmpi mkl
+ module load intel/2016.4.072
+ module list
+ module av openmpi mkl
+ module load mkl/2016.4.072 openmpi/3.0.1-intel</code></pre>
+<h1 id="editing-files">Editing files</h1>
+<p>Linux editor: vim and emacs installed. Just start the editor from a login node.</p>
+<pre><code>## To use vim
+vim myfile.txt
+## To use emacs
+emacs myfile.txt</code></pre>
+<h1 id="job-submission-1">Job Submission</h1>
+<ul>
+<li>Check your account slurm association</li>
+</ul>
+<pre><code>sacctmgr show association -p user=$USER
+
+Cluster|Account|User|Partition|Share|Priority|GrpJobs|GrpTRES|GrpSubmit|GrpWall|GrpTRESMins|MaxJobs|MaxTRES|MaxTRESPerNode|MaxSubmit|MaxWall|MaxTRESMins|QOS|Def QOS|GrpTRESRunMins|
+perceus-00|scs|wfeinstein|lr6|1|||||||||||||lr6_lowprio,lr_debug,lr_normal|||
+perceus-00|scs|wfeinstein|es1|1|||||||||||||es_debug,es_lowprio,es_normal|||
+</code></pre>
+<h3 id="request-an-interactive-node">Request an interactive node</h3>
+<p>Note: Use your account, partition, qos</p>
+<p>srun –account=ac_xxx –nodes=1 –partition=xxx –time=1:0:0 –qos=xxx –pty bash</p>
+<h1 id="submit-a-batch-job-1">Submit a batch job</h1>
+<p>Download a sample <a href="my_submit.sh">job submission script</a> and <a href="my.py">python sample</a></p>
+<p>Note: Use your account, partition, qos</p>
+<pre><code>#!/bin/bash -l
+
+# Job name:
+#SBATCH --job-name=mytest
+#
+# Partition:
+#SBATCH --partition=lr6
+#
+# Account:
+#SBATCH --account=your_account
+#
+# qos:
+#SBATCH --qos=lr_normal
+#
+# Wall clock time:
+#SBATCH --time=1:00:00
+#
+# Node count
+#SBATCH --nodes=1
+#
+# Node feature
+##SBATCH --constrain=lr6_cas
+#
+# cd to your work directory
+cd /global/scratch/$USER
+
+## Commands to run
+module load python/3.7
+python my.py &gt;&amp; mypy.out </code></pre>
+<h1 id="monitor-jobs">Monitor jobs</h1>
+<p><code>squeu -u $USER</code></p>
+<p><code>sacct -j &lt;JOBID&gt;</code></p>
+<p><code>wwall -j &lt;JOBID&gt;</code></p>
+</body>
+</html>
