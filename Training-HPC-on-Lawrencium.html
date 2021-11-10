@@ -5,7 +5,7 @@
   <meta name="generator" content="pandoc" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
   <meta name="author" content="Novermber 10, 2021" />
-  <title>HPC-on-Lawrencium</title>
+  <title>HPC on Lawrencium Supercluster</title>
   <style>
     html {
       line-height: 1.5;
@@ -151,7 +151,7 @@
 </head>
 <body>
 <header id="title-block-header">
-<h1 class="title">HPC-on-Lawrencium</h1>
+<h1 class="title">HPC on Lawrencium Supercluster</h1>
 <p class="author">Novermber 10, 2021</p>
 <p class="date">Wei Feinstein</p>
 </header>
@@ -163,23 +163,23 @@
 <h1 id="outline">Outline</h1>
 <ul>
 <li>Overview of Lawrencium supercluster</li>
-<li>Access/login to clusters
+<li>Access to the cluster
 <ul>
 <li>Project types</li>
 <li>User accounts</li>
-<li>login node</li>
+<li>login</li>
 <li>Storage/compute space (home, scratch, group, condo storage)</li>
 </ul></li>
-<li>Data transfer to/from clusters
+<li>Data transfer
 <ul>
-<li>DTN</li>
+<li>DTN data transfer node</li>
 <li>Globus</li>
 <li>GDrive</li>
 </ul></li>
-<li>Software access and installation
+<li>Software stack and installation
 <ul>
-<li>Software stack</li>
-<li>Installation your own software</li>
+<li>Software Module Farm</li>
+<li>Installation of your own software</li>
 </ul></li>
 <li>Job submission and monitoring
 <ul>
@@ -189,11 +189,11 @@
 <li>GPU job submission</li>
 <li>Submit serial tasks in parallel</li>
 </ul></li>
-<li>Jupyter notebooks using Open Ondemand
+<li>Open Ondemand Web Service
 <ul>
 <li>Overview</li>
 <li>Jupyter notebooks</li>
-<li>Customized kernels</li>
+<li>Customized kernel</li>
 <li>Remote visualization<br />
 </li>
 </ul></li>
@@ -201,10 +201,10 @@
 </ul>
 <h1 id="lawrencium-cluster-overview">Lawrencium Cluster Overview</h1>
 <ul>
-<li>Computing service provided by the IT Division to support researchers in all disciplines at the Lab</li>
 <li>A LBNL Condo Cluster Computing program
 <ul>
-<li>Significant investment from LBNL</li>
+<li>Support researchers in all disciplines at the Lab</li>
+<li>Significant investment by the IT division</li>
 <li>Individual PIs buy in compute nodes and storage</li>
 <li>Computational cycles are shared among all lawrencium users</li>
 </ul></li>
@@ -220,7 +220,7 @@
 <li>Standalone clusters</li>
 </ul>
 <h1 id="conceptual-diagram-of-lawrencium">Conceptual Diagram of Lawrencium</h1>
-<p><left><img src="figures/lrc2.png" width="80%"></left></p>
+<p><left><img src="figures/lrc1.png" width="80%"></left></p>
 <p><a href="https://sites.google.com/a/lbl.gov/high-performance-computing-services-group/lbnl-supercluster/lawrencium">Detailed information of Lawrencium</a></p>
 <h1 id="getting-access-to-lawrencium">Getting Access to Lawrencium</h1>
 <h4 id="three-types-of-project-accounts">Three types of Project Accounts</h4>
@@ -243,7 +243,7 @@
 <li>Linux terminal (command-line) session.</li>
 <li>Mac terminal (see Applications -&gt; Utilities -&gt; Terminal).</li>
 <li>Windows <a href="https://www.chiark.greenend.org.uk/~sgtatham/putty/latest.html">PuTTY</a>.</li>
-<li>One-time passwords (OTPs): set up your smartphone or tablet with Google Authenticator. <a href="https://sites.google.com/a/lbl.gov/high-performance-computing-services-group/authentication/linotp-usage">Instructions</a></li>
+<li>One-time passwords (OTPs): set up your smartphone or tablet with Google Authenticator with <a href="https://sites.google.com/a/lbl.gov/high-performance-computing-services-group/authentication/linotp-usage">Instructions here</a></li>
 <li>Login:</li>
 </ul>
 <pre><code>ssh $USER@lrc-login.lbl.gov
@@ -261,7 +261,10 @@ password:</code></pre>
 <li>/global/home/groups-sw/ 200GB backup</li>
 <li>/global/home/group/ 400GB no backup</li>
 </ul></li>
-<li>Condo storage: <code>e.g. /clusterfs/etna/ or /global/scratch/projects/xxx</code></li>
+<li>Condo storage:
+<ul>
+<li><code>e.g. /clusterfs/etna/ or /global/scratch/projects/xxx</code></li>
+</ul></li>
 </ul>
 <h1 id="data-transfer">Data Transfer</h1>
 <h4 id="lrc-xfer.lbl.gov-data-transfer-node-dtn">lrc-xfer.lbl.gov: Data Transfer Node (DTN)</h4>
@@ -290,6 +293,7 @@ rsync -avpz file-at-local $USER@lrc-xfer.lbl.gov:/global/home/user/$USER</code><
 </ul>
 <h1 id="data-transfer-with-globus">Data Transfer with Globus</h1>
 <ul>
+<li>Globus lets you transfer and share data on your storage systems with collaborators</li>
 <li>Fast data transfer, refer to <a href="https://sites.google.com/a/lbl.gov/high-performance-computing-services-group/getting-started/data-transfer">instructions</a></li>
 <li>Berkeley Lab users can use Globus to transfer files in/out of their LBNL Google drive. Details about Google drive via Globus is <a href="https://commons.lbl.gov/display/itdivision/GDrive+Access+Via+Globus">here</a></li>
 <li>Possible endpoints include: lbnl#lrc, your laptop/desktop, NERSC, among others.</li>
@@ -299,7 +303,7 @@ rsync -avpz file-at-local $USER@lrc-xfer.lbl.gov:/global/home/user/$USER</code><
 <li>Run Globus Connect Pesonal on your local machine</li>
 </ul></li>
 </ul>
-<p><left><img src="figures/globus.jpg" width="70%"></left></p>
+<p><left><img src="figures/globus.jpg" width="60%"></left></p>
 <h1 id="software-module-farm">Software Module Farm</h1>
 <ul>
 <li>Software stack, commonly used compiler, software tools provided to all cluster users</li>
@@ -341,7 +345,7 @@ module load intel/2016.4.072
 module av openmpi
 module load mkl/2016.4.072 openmpi/3.0.1-intel</code></pre>
 <ul>
-<li>More environment modules can be found <a href="https://sites.google.com/a/lbl.gov/high-performance-computing-services-group/getting-started/sl6-module-farm-guide">here</a></li>
+<li><a href="https://sites.google.com/a/lbl.gov/high-performance-computing-services-group/getting-started/sl6-module-farm-guide">More environment modules information</a></li>
 <li>Users are allowed to install software in their home or group space</li>
 <li>Users don’t have admin rights, but most software can be installed <code>--prefix=/dir/to/your/path</code></li>
 </ul>
@@ -716,15 +720,23 @@ n0215.lr6               0%   (40) % 3473/192058    % 1655/8191      READY</code>
 </ul></li>
 </ul>
 <h1 id="open-ondemand-1">Open Ondemand</h1>
-<p><left><img src="figures/ood.png" width="80%"></left></p>
+<p><left><img src="figures/ood.png" width="70%"></left></p>
 <h1 id="jupyter-notebook">Jupyter Notebook</h1>
 <ul>
 <li>Create user kernels</li>
 </ul>
-<pre><code>module load python/3.7
-python -m venv --system-site-packages ./mykernel
+<pre><code>python -m venv --system-site-packages ./mykernel
 source ./mykernel/bin/activate
-python -m ipykernel install --user --name=mykernel
+python -m ipykernel install --user --name=mykernel</code></pre>
+<pre><code>[wfeinstein@n0000 ~]$ module load python/3.7
+[wfeinstein@n0000 ~]$ module list
+Currently Loaded Modulefiles:
+  1) emacs/25.1   2) python/3.7
+[wfeinstein@n0000 ~]$ python -m venv --system-site-packages ./mykernel
+[wfeinstein@n0000 ~]$ source ./mykernel/bin/activate
+(mykernel) [wfeinstein@n0000 ~]$ python -m ipykernel install --user --name=mykernel
+Installed kernelspec mykernel in /global/home/users/wfeinstein/.local/share/jupyter/kernels/mykernel
+(mykernel) [wfeinstein@n0000 ~]$    
 
 # Now you should be able to choose the virtual environment &quot;mykernel&quot; as a kernel in Jupyter</code></pre>
 <h1 id="one-minute-demo-launching-jupyter-notebooks">One-Minute Demo Launching Jupyter Notebooks</h1>
@@ -735,6 +747,7 @@ python -m ipykernel install --user --name=mykernel
 <li><p>Allow applications with a GUI, commercial applications, debugger or visualization applications to render results.</p>
 <ul>
 <li><p>Remote Desktop launched within Open OnDemand - <strong>coming up, stay tuned</strong></p></li>
+<li><p>viz node lrc-viz.lbl.gov</p></li>
 <li><p>RealVNC is provided as the remote desktop service with local VNC Viewer<br />
 </p></li>
 <li><p>Start VNC service on viz node lrc-viz.lbl.gov</p></li>

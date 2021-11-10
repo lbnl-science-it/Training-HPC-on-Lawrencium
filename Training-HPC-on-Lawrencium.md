@@ -1,6 +1,7 @@
-% HPC-on-Lawrencium
+% HPC on Lawrencium Supercluster
 % Novermber 10, 2021
 % Wei Feinstein
+
 
 # Introduction
 
@@ -16,37 +17,37 @@ There will be a hands-on session at the end of this training
 # Outline
 
 - Overview of Lawrencium supercluster
-- Access/login to clusters
+- Access to the cluster
   - Project types 
   - User accounts
-  - login node
+  - login 
   - Storage/compute space (home, scratch, group, condo storage)
-- Data transfer to/from clusters
-  - DTN
+- Data transfer 
+  - DTN data transfer node
   - Globus
   - GDrive
-- Software access and installation 
-  - Software stack 
-  - Installation your own software
+- Software stack and installation 
+  - Software Module Farm
+  - Installation of your own software
 - Job submission and monitoring
   - Accounts & partitions
   - Basic job submission
   - Interactive jobs
   - GPU job submission
   - Submit serial tasks in parallel
-- Jupyter notebooks using Open Ondemand
+- Open Ondemand Web Service
   - Overview
   - Jupyter notebooks 
-  - Customized kernels
+  - Customized kernel
   - Remote visualization  
 - Hands-on exercises
 
 
 # Lawrencium Cluster Overview
 
-- Computing service provided by the IT Division to support researchers in all disciplines at the Lab
 - A LBNL Condo Cluster Computing program
-  - Significant investment from LBNL
+  - Support researchers in all disciplines at the Lab
+  - Significant investment by the IT division
   - Individual PIs buy in compute nodes and storage
   - Computational cycles are shared among all lawrencium users
 
@@ -63,7 +64,7 @@ There will be a hands-on session at the end of this training
 
 # Conceptual Diagram of Lawrencium
 
-<left><img src="figures/lrc2.png" width="80%"></left>
+<left><img src="figures/lrc1.png" width="80%"></left>
 
 [Detailed information of Lawrencium](https://sites.google.com/a/lbl.gov/high-performance-computing-services-group/lbnl-supercluster/lawrencium)
 
@@ -90,7 +91,7 @@ There will be a hands-on session at the end of this training
 - Linux terminal (command-line) session. 
 - Mac terminal (see Applications -> Utilities -> Terminal). 
 - Windows [PuTTY](https://www.chiark.greenend.org.uk/~sgtatham/putty/latest.html).
-- One-time passwords (OTPs): set up your smartphone or tablet with Google Authenticator. [Instructions](https://sites.google.com/a/lbl.gov/high-performance-computing-services-group/authentication/linotp-usage) 
+- One-time passwords (OTPs): set up your smartphone or tablet with Google Authenticator with [Instructions here](https://sites.google.com/a/lbl.gov/high-performance-computing-services-group/authentication/linotp-usage) 
 - Login:
 ```
 ssh $USER@lrc-login.lbl.gov
@@ -108,7 +109,8 @@ password:
 - Shared group project space
    - /global/home/groups-sw/  200GB backup
    - /global/home/group/ 400GB no backup
-- Condo storage: `e.g. /clusterfs/etna/ or /global/scratch/projects/xxx`
+- Condo storage: 
+  - `e.g. /clusterfs/etna/ or /global/scratch/projects/xxx`
 
 
 # Data Transfer 
@@ -136,6 +138,7 @@ rsync -avpz file-at-local $USER@lrc-xfer.lbl.gov:/global/home/user/$USER
 
 # Data Transfer with Globus
 
+- Globus lets you transfer and share data on your storage systems with collaborators 
 - Fast data transfer, refer to [instructions](https://sites.google.com/a/lbl.gov/high-performance-computing-services-group/getting-started/data-transfer)
 - Berkeley Lab users can use Globus to transfer files in/out of their LBNL Google drive. Details about Google drive via Globus is [here](https://commons.lbl.gov/display/itdivision/GDrive+Access+Via+Globus)
 - Possible endpoints include: lbnl#lrc, your laptop/desktop, NERSC, among others.
@@ -143,7 +146,7 @@ rsync -avpz file-at-local $USER@lrc-xfer.lbl.gov:/global/home/user/$USER
    - Create an endpoint on your machine using Globus Connect Personal [https://www.globus.org/globus-connect-personal](https://www.globus.org/globus-connect-personal)
    - Run Globus Connect Pesonal on your local machine 
 
-<left><img src="figures/globus.jpg" width="70%"></left>
+<left><img src="figures/globus.jpg" width="60%"></left>
 
 
 # Software Module Farm 
@@ -189,7 +192,7 @@ module load intel/2016.4.072
 module av openmpi
 module load mkl/2016.4.072 openmpi/3.0.1-intel
 ```
-- More environment modules can be found [here](https://sites.google.com/a/lbl.gov/high-performance-computing-services-group/getting-started/sl6-module-farm-guide)
+- [More environment modules information](https://sites.google.com/a/lbl.gov/high-performance-computing-services-group/getting-started/sl6-module-farm-guide)
 - Users are allowed to install software in their home or group space
 - Users don't have admin rights, but most software can be installed 
 ` --prefix=/dir/to/your/path`
@@ -613,17 +616,27 @@ More information of [slurm usage](https://sites.google.com/a/lbl.gov/high-perfor
 
 # Open Ondemand 
 
-<left><img src="figures/ood.png" width="80%"></left>
+<left><img src="figures/ood.png" width="70%"></left>
 
 
 # Jupyter Notebook
 
 - Create user kernels
 ```  
-module load python/3.7
 python -m venv --system-site-packages ./mykernel
 source ./mykernel/bin/activate
 python -m ipykernel install --user --name=mykernel
+```
+```
+[wfeinstein@n0000 ~]$ module load python/3.7
+[wfeinstein@n0000 ~]$ module list
+Currently Loaded Modulefiles:
+  1) emacs/25.1   2) python/3.7
+[wfeinstein@n0000 ~]$ python -m venv --system-site-packages ./mykernel
+[wfeinstein@n0000 ~]$ source ./mykernel/bin/activate
+(mykernel) [wfeinstein@n0000 ~]$ python -m ipykernel install --user --name=mykernel
+Installed kernelspec mykernel in /global/home/users/wfeinstein/.local/share/jupyter/kernels/mykernel
+(mykernel) [wfeinstein@n0000 ~]$    
 
 # Now you should be able to choose the virtual environment "mykernel" as a kernel in Jupyter
 ```
@@ -640,6 +653,7 @@ python -m ipykernel install --user --name=mykernel
 
   - Remote Desktop launched within Open OnDemand - **coming up, stay tuned**
   
+  - viz node lrc-viz.lbl.gov
   - RealVNC is provided as the remote desktop service with local VNC Viewer  
   - Start VNC service on viz node lrc-viz.lbl.gov
   - Connect to the VNC server with VNC Viewer locally
